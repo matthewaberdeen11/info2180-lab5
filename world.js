@@ -1,11 +1,14 @@
 const countryInput = document.getElementById('country');
-const lookupButton = document.getElementById('lookup');
 const result = document.getElementById('result');
+const lookupButton = document.getElementById('lookup');
+const citiesButton = document.getElementById('lookup-cities');
 
-lookupButton.addEventListener('click', async (event) => {
-  event.preventDefault();
-
+async function lookup(showCities) {
   const params = new URLSearchParams({ country: countryInput.value.trim() });
+
+  if (showCities) {
+    params.set('lookup', 'cities');
+  }
 
   try {
     const response = await fetch(`world.php?${params}`);
@@ -17,4 +20,7 @@ lookupButton.addEventListener('click', async (event) => {
     result.textContent = 'Could not load the results.';
     console.error(error);
   }
-});
+}
+
+lookupButton.addEventListener('click', () => lookup(false));
+citiesButton.addEventListener('click', () => lookup(true));
